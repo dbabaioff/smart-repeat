@@ -1,11 +1,12 @@
 angular.module('smartRepeat', [])
 
 .directive('smartRepeat', ['$parse', '$animate', function($parse, $animate) {
-    var uid = ['0', '0', '0'];
+    var uid      = ['0', '0', '0'],
+        ngMinErr = angular.$$minErr('ng');
 
     function assertNotHasOwnProperty(name, context) {
         if (name === 'hasOwnProperty') {
-            //throw throw new Error('badname', "hasOwnProperty is not a valid {0} name", context);
+            throw ngMinErr('badname', "hasOwnProperty is not a valid {0} name", context);
         }
     }
 
@@ -96,7 +97,7 @@ angular.module('smartRepeat', [])
     }
 
     var NG_REMOVED = '$$NG_REMOVED';
-//    var ngRepeatMinErr = minErr('ngRepeat');
+    var ngRepeatMinErr = angular.$$minErr('ngRepeat');
 
     return {
         transclude: 'element',
@@ -111,8 +112,8 @@ angular.module('smartRepeat', [])
                 hashFnLocals = {$id: hashKey};
 
             if (!match) {
-//                throw ngRepeatMinErr('iexp', "Expected expression in form of '_item_ in _collection_[ track by _id_]' but got '{0}'.",
-//                    expression);
+                throw ngRepeatMinErr('iexp', "Expected expression in form of '_item_ in _collection_[ track by _id_]' but got '{0}'.",
+                    expression);
             }
 
             lhs = match[1];
@@ -139,8 +140,8 @@ angular.module('smartRepeat', [])
 
             match = lhs.match(/^(?:([\$\w]+)|\(([\$\w]+)\s*,\s*([\$\w]+)\))$/);
             if (!match) {
-//                throw ngRepeatMinErr('iidexp', "'_item_' in '_item_ in _collection_' should be an identifier or '(_key_, _value_)' expression, but got '{0}'.",
-//                    lhs);
+                throw ngRepeatMinErr('iidexp', "'_item_' in '_item_ in _collection_' should be an identifier or '(_key_, _value_)' expression, but got '{0}'.",
+                    lhs);
             }
             valueIdentifier = match[3] || match[1];
             keyIdentifier = match[2];

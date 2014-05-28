@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.10/angular.js"></script>
+    <script type="text/javascript" src="../smart-repeat.js"></script>
+    <script>
+        angular.module('app', ['smartRepeat']).controller('MainCtrl', function($scope) {
+            $scope.items = [1, 2, 3];
+
+            $scope.remove = function() {
+                $scope.items.splice(0, 1);
+            };
+
+            $scope.middle = function() {
+                $scope.items.splice($scope.items.length / 2, 0, (new Date).getTime());
+            };
+
+            $scope.add = function() {
+                $scope.items.push((new Date).getTime());
+            };
+
+            $scope.rotate = function(count) {
+                var unshift = Array.prototype.unshift,
+                    splice = Array.prototype.splice;
+
+                var len = $scope.items.length >>> 0,
+                    count = count >> 0;
+
+                unshift.apply($scope.items, splice.call($scope.items, count % len, len));
+            };
+        });
+    </script>
+</head>
+
+<body ng-controller="MainCtrl">
+    <p>ITEMS</p>
+    <ul>
+        <li smart-repeat="item in items">
+            {{ item }}
+        </li>
+        <li ht-item="A">A</li>
+        <li ht-item="B">B</li>
+        <li ht-item="C">C</li>
+
+    </ul>
+
+    <button ng-click="add()">ADD</button>
+    <button ng-click="middle()">MIDDLE</button>
+    <button ng-click="remove()">REMOVE</button>
+    <button ng-click="rotate(1)">ROTATE</button>
+</body>
+</html>
